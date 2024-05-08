@@ -11,6 +11,8 @@ import { PostsModule } from './posts/posts.module';
 import config from './common/configs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GqlConfigService } from './gql-config.service';
+import { ScheduleModule } from './schedule/schedule.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -36,10 +38,11 @@ import { GqlConfigService } from './gql-config.service';
       driver: ApolloDriver,
       useClass: GqlConfigService,
     }),
-
+    CacheModule.register(),
     AuthModule,
     UsersModule,
     PostsModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
