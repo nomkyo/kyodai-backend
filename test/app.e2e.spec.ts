@@ -21,7 +21,7 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/schedule/leagues returns the leagues', async () => {
+  it('/leagues returns the leagues', async () => {
     const expectedResponse = [
       {
         key: 'americanfootball_nfl',
@@ -36,14 +36,14 @@ describe('AppController (e2e)', () => {
       .query({ apiKey: process.env.ODDS_API_KEY, all: true })
       .reply(200, expectedResponse);
     await request(app.getHttpServer())
-      .get(`/schedule/leagues`)
+      .get(`/leagues`)
       .expect(200)
       .expect(expectedResponse);
 
     scope.done();
   });
   it('/schedule returns the schedules', async () => {
-    const sport = 'baseball_mlb';
+    const league = 'baseball_mlb';
     const gameStartTime = '2023-10-11T23:10:00Z';
     const homeTeam = 'Houston Texans';
     const awayTeam = 'Kansas City Chiefs';
@@ -97,7 +97,7 @@ describe('AppController (e2e)', () => {
     ];
 
     const scope = nock(process.env.ODDS_BASE_URL)
-      .get(`/sports/${sport}/odds`)
+      .get(`/sports/${league}/odds`)
       .query({
         apiKey: process.env.ODDS_API_KEY,
         regions: 'us',
@@ -107,7 +107,7 @@ describe('AppController (e2e)', () => {
 
     await request(app.getHttpServer())
       .get(`/schedule`)
-      .query({ sport })
+      .query({ league })
       .expect(200)
       .expect(expectedSchedules);
 
